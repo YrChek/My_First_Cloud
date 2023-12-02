@@ -1,13 +1,16 @@
 # import datetime
 import os
 import hashlib
+import shutil
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models import Sum, Count
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 
 from my_first_cloud import settings
+from my_first_cloud.settings import MEDIA_ROOT
 
 
 def user_directory_path(instance, filename):
@@ -18,9 +21,15 @@ class User(AbstractUser):
     full_name = models.CharField(max_length=255, blank=True)
     relative_path = models.CharField(max_length=255, blank=True)
 
+    @property
+    def files(self):
+        obj = Files.objects.filter(user=self.pk)
+        data = obj.aggregate(sum=Sum('size'), count=Count('id'))
+        return data
+
 
 class Files(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='owners')
     comment = models.TextField(blank=True)
     file = models.FileField(upload_to=user_directory_path)
     filename = models.CharField(max_length=255)
@@ -45,3 +54,13 @@ def delete_file(sender, instance, **kwargs):
     file_path = instance.file.path
     if os.path.exists(file_path):
         os.remove(file_path)
+
+
+@receiver(pre_delete, sender=User)
+def delete_user(sender, instance, **kwargs):
+    files_path = instance.relative_path
+    media_path = MEDIA_ROOT
+    path = f'{media_path}{files_path}'
+    if os.path.exists(path):
+        shutil.rmtree(path)
+        print('DELETE')

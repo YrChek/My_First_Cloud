@@ -21,7 +21,7 @@ class UserCreateSerializer(ModelSerializer):
             username=validated_data['username'],
             email=validated_data['email'],
             full_name=validated_data['full_name'],
-            relative_path=f'/{validated_data["username"]}/'
+            relative_path=f'/{validated_data["username"]}'
         )
         user.set_password(validated_data["password"])
         user.save()
@@ -33,6 +33,12 @@ class UserGetSerializer(ModelSerializer):
         model = User
         fields = ['email', 'username', 'full_name', 'is_staff']
         read_only_fields = ['username', 'is_staff']
+
+
+class UserDelSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
 
 
 class FilesSerializer(serializers.ModelSerializer):
@@ -59,3 +65,17 @@ class FilesSerializer(serializers.ModelSerializer):
             else:
                 raise ValidationError(f'Этот файл уже существует под названием {file_name}')
         return attrs
+
+
+class UserAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'full_name', 'is_staff', 'email','files']
+        read_only_fields = ['id', 'username', 'full_name', 'files']
+
+
+class FilesAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Files
+        fields = ['id','filename', 'type', 'comment', 'create_at', 'size']
+        read_only_fields = ['id', 'create_at']

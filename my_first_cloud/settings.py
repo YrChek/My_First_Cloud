@@ -162,3 +162,38 @@ REST_FRAMEWORK = {
 #         "user_create_password_retype": "app.serializers.UserCreatePasswordRetypeSerializer",
 #     },
 # }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+
+    'formatters': {
+        'default_formatter': {
+            'format': '%(name)s [%(levelname)s:%(asctime)s] %(message)s',
+            "datefmt": "%Y-%m-%d %H:%M:%S"
+        },
+    },
+    'handlers': {
+        'stream_handler': {
+            'class': 'logging.StreamHandler',
+            # 'filename': 'logs.log',
+            # 'maxBytes': 20480,
+            # 'backupCount': 2,
+            # 'encoding': 'utf-8',
+            'formatter': 'default_formatter'
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['stream_handler'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'django.server ': {
+            'handlers': ['stream_handler'],
+            'level': 'DEBUG',
+            'propagate': False,
+        }
+    }
+}
+
