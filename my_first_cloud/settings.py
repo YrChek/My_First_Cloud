@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+# import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,7 @@ SECRET_KEY = 'django-insecure-yb^p_3#wjjwwqux!$#hx#cp^%6s&vjb_5=hmvsy6)pc^#d5=iy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 AUTH_USER_MODEL = "app.User"
 
@@ -75,7 +76,8 @@ ROOT_URLCONF = 'my_first_cloud.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # 'DIRS': [os.path.join(BASE_DIR, 'frontend')],
+        'DIRS': [BASE_DIR / 'frontend'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -87,6 +89,11 @@ TEMPLATES = [
         },
     },
 ]
+
+STATICFILES_DIRS = (
+    # os.path.join(BASE_DIR, 'frontend', "build", "static"),
+    BASE_DIR / 'frontend' / "build" / "static",
+)
 
 WSGI_APPLICATION = 'my_first_cloud.wsgi.application'
 

@@ -50,14 +50,12 @@ class FilesSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         user = self.context["request"].user
         method = self.context["request"].method
-        print(method)
         if method == 'POST':
             try:
                 user_name = str(user)
                 filename = attrs['filename']
                 re_filename = re.sub(' ', '_', filename)
                 file = f'{user_name}/{re_filename}'
-                print(filename)
                 obj = Files.objects.get(user=user, file=file)
                 file_name = obj.filename
             except:

@@ -13,6 +13,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
+from django.shortcuts import render
 
 logger = logging.getLogger(__name__)
 # logger = logging.getLogger('app')
@@ -22,6 +23,10 @@ from app.paginator import UserAPIListPagination
 from app.serializers import UserGetSerializer, UserCreateSerializer, FilesSerializer, UserAdminSerializer, \
     FilesAdminSerializer
 from my_first_cloud.settings import MEDIA_ROOT
+
+
+def index(request):
+    return render(request, "build/index.html")
 
 
 class TokenInView(TokenCreateView):
@@ -50,7 +55,8 @@ class UserCreateView(CreateAPIView):
     def create(self, request, *args, **kwargs):
         logger.debug('UserCreateView request: %s %s' % (request.method, request.path))
         response = super().create(request, *args, **kwargs)
-        logger.debug('UserCreateView response: %s' % (response.data))
+        logger.debug('UserCreateView: method %s %s %s %s' %
+                     (request.method, 'response', '->', 'status: %s' % (response.status_code)))
         return response
 
 
@@ -68,7 +74,8 @@ class UserGetView(ListAPIView):
     def list(self, request, *args, **kwargs):
         logger.debug('UserGetView request: %s %s' % (request.method, request.path))
         response = super().list(request, *args, **kwargs)
-        logger.debug('UserGetView response: %s' % 'status: %s' % (response.status_code))
+        logger.debug('UserGetView: method %s %s %s %s' %
+                     (request.method, 'response', '->', 'status: %s' % (response.status_code)))
         return response
 
 
@@ -93,7 +100,8 @@ class FilesItemUserView(ModelViewSet):
     def create(self, request, *args, **kwargs):
         logger.debug('FilesItemUserView: %s %s' % (request.method, request.path))
         response = super().create(request, *args, **kwargs)
-        logger.debug('FilesItemUserView response: %s' % 'status: %s' % (response.status_code))
+        logger.debug('FilesItemUserView: method %s %s %s %s' %
+                     (request.method, 'response', '->', 'status: %s' % (response.status_code)))
         return response
 
     def perform_create(self, serializer):
@@ -102,13 +110,15 @@ class FilesItemUserView(ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         logger.debug('FilesItemUserView: %s %s' % (request.method, request.path))
         response = super().retrieve(request, *args, **kwargs)
-        logger.debug('FilesItemUserView response: %s' % 'status: %s' % (response.status_code))
+        logger.debug('FilesItemUserView: method %s %s %s %s' %
+                     (request.method, 'response', '->', 'status: %s' % (response.status_code)))
         return response
 
     def update(self, request, *args, **kwargs):
         logger.debug('FilesItemUserView: %s %s' % (request.method, request.path))
         response = super().update(request, *args, **kwargs)
-        logger.debug('FilesItemUserView response: %s' % 'status: %s' % (response.status_code))
+        logger.debug('FilesItemUserView: method %s %s %s %s' %
+                     (request.method, 'response', '->', 'status: %s' % (response.status_code)))
         return response
 
     def destroy(self, request, *args, **kwargs):

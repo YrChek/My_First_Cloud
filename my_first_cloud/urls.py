@@ -20,7 +20,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 from app.views import UserCreateView, UserGetView, FilesItemUserView, TestView, FilesDownloadView, UsersAdminView, \
-    ItemUserFilesAdminView, TokenInView, TokenOutView
+    ItemUserFilesAdminView, TokenInView, TokenOutView, index
 from my_first_cloud import settings
 
 router = routers.DefaultRouter()
@@ -29,12 +29,12 @@ router.register('users', UsersAdminView)
 router.register('content', ItemUserFilesAdminView)
 
 urlpatterns = [
+    path("", index, name="index"),
     path('staff/', include(router.urls)),
     path('admin/', admin.site.urls),
     path('users/item/', include(router.urls)),
     path('reg/', UserCreateView.as_view()),
     path('user/', UserGetView.as_view()),
-    # path('auth/', include('djoser.urls.authtoken')),
     path('auth/login/', TokenInView.as_view()),
     path('auth/logout/', TokenOutView.as_view()),
     path('test', TestView.as_view()),
