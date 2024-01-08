@@ -39,6 +39,6 @@ urlpatterns = [
     path('auth/logout/', TokenOutView.as_view()),
     path('test', TestView.as_view()),
     path('download/<hash>/', FilesDownloadView.as_view()),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
