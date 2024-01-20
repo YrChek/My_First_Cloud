@@ -180,9 +180,9 @@ My_First_Cloud
 
 #### Развертывание проекта
 
-1. Cоздадим файл с настройками gunicorn.service.
+1. Создадим файл с настройками gunicorn.service.
 
-        sudo nano /etc/systemd/system/My_First_Cloud.gunicorn.service
+        sudo nano /etc/systemd/system/gunicorn.service
 
     ```
     [Unit]
